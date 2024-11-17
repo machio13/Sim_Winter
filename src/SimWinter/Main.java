@@ -1,4 +1,4 @@
-package NewSimSummer;
+package SimWinter;
 
 public class Main {
     public static void main(String[] args) {

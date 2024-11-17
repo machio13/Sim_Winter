@@ -1,4 +1,4 @@
-package NewSimSummer;
+package SimWinter;
 
 import java.io.File;
 import java.util.List;
@@ -25,8 +25,8 @@ public class Menu {
             switch (userInput) {
                 case "1" -> {
                     System.out.println("「銘柄マスタ一覧表示」が選択されました。");
-                    List<Stockers> marketCsvReader = MarketCsvReader.readMarketCsv(marketCsvFile);
-                    MarketDisplay marketDisplay = new MarketDisplay();
+                    List<Stock> marketCsvReader = MarketCsvReader.readMarketCsv(marketCsvFile);
+                    MarketCsvDisplay marketDisplay = new MarketCsvDisplay();
                     marketDisplay.shouMarket(marketCsvReader);
                 }
                 case "2" -> {
@@ -36,13 +36,13 @@ public class Menu {
                 }
                 case "3" -> {
                     System.out.println("「取引入力」が選択されました。");
-                    TradeWriter tradeWriter = new TradeWriter();
+                    TradeCsvWriter tradeWriter = new TradeCsvWriter();
                     tradeWriter.writeTrade(marketCsvFile, tradeCsvFile);
                 }
                 case "4" -> {
                     System.out.println("「取引表示」が選択されました。");
-                    List<Trade> tradeList = TradeReader.readTradeCsv(tradeCsvFile);
-                    TradeDisplay tradeDisplay = new TradeDisplay();
+                    List<Trade> tradeList = TradeCsvReader.readTradeCsv(tradeCsvFile);
+                    TradeCsvDisplay tradeDisplay = new TradeCsvDisplay();
                     tradeDisplay.showTrade(tradeList);
                 }
                 case "9" -> {
