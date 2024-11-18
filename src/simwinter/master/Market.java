@@ -1,4 +1,4 @@
-package SimWinter;
+package simwinter.master;
 
 public enum Market {
     Prime("P"),

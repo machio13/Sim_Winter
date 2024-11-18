@@ -1,11 +1,8 @@
-package SimWinter;
-
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
+package simwinter;
 
 public abstract class CutName {
 
-    abstract int cutNum();
+    public abstract int cutNum();
 
     public String isCutName (String name) {
         if (name.length() > cutNum()) {

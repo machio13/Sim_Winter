@@ -1,4 +1,7 @@
-package SimWinter;
+package simwinter.trade;
+
+import simwinter.Checker;
+import simwinter.CutName;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -11,9 +14,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
 
 public class TradeValidation {
-    Scanner scanner = new Scanner(System.in);
+    static Scanner scanner = new Scanner(System.in);
 
-    public LocalDateTime addTradeTime() {
+    public static LocalDateTime addTradeTime() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd/HH:mm").withResolverStyle(ResolverStyle.STRICT);
         String userInputStr = "";
         LocalDateTime userInput = null;
@@ -51,13 +54,13 @@ public class TradeValidation {
         return userInput;
     }
 
-    public String addName(File marketFile) {
+    public static String addTicker(File masterFile) {
         boolean check = true;
         String userInput = "";
         while (check) {
-            System.out.print("銘柄名>");
+            System.out.print("銘柄コード>");
             userInput = scanner.nextLine();
-            if (isNameCheck(marketFile, userInput)) {
+            if (Checker.isTickerCheck(masterFile, userInput)) {
                 System.out.println("正常な入力です");
                 check = false;
             }else {
@@ -67,21 +70,30 @@ public class TradeValidation {
         return userInput;
     }
 
-    public String addSide() {
-        String userInput = "";
+    public static TradeSide addSide() {
+        String userInputStr = "";
+        TradeSide userInput = null;
         boolean check = true;
         while (check) {
             System.out.print("売買区分(Sell or Buy)>");
-            userInput = scanner.nextLine();
-            if (userInput.equals("Sell") || userInput.equals("Buy")) {
-                check = false;
-            }else {
-                System.out.println("正しく記入し直してください。");
+            userInputStr = scanner.nextLine();
+            switch (userInputStr) {
+                case "Sell" -> {
+                    userInput = TradeSide.Sell;
+                    check = false;
+                }
+                case "Buy" -> {
+                    userInput = TradeSide.Buy;
+                    check = false;
+                }
+                default -> {
+                    System.out.println("売買区分を正しく入力してください。");
+                }
             }
         }return userInput;
     }
 
-    public long addQuantity() {
+    public static long addQuantity() {
         String userInputStr = "";
         long userInput = 0;
         boolean check = true;
@@ -90,7 +102,7 @@ public class TradeValidation {
             userInputStr = scanner.nextLine();
             try {
                 userInput = Long.parseLong(userInputStr);
-                if (userInput % 100 == 0) {
+                if (userInput % 100 == 0 && userInput > 0) {
                     check = false;
                 }else {
                     System.out.println("100株単位で入力してください");
@@ -102,7 +114,7 @@ public class TradeValidation {
         return userInput;
     }
 
-    public BigDecimal addUnitPrice() {
+    public static BigDecimal addUnitPrice() {
         String userInputStr = "";
         BigDecimal userInput = null;
         boolean check = true;
@@ -110,9 +122,16 @@ public class TradeValidation {
             System.out.print("取引単価(小数第二位まで可能)>");
             userInputStr = scanner.nextLine();
             try {
-                BigDecimal bigDecimal = new BigDecimal(userInputStr);
-                userInput = bigDecimal.setScale(2, BigDecimal.ROUND_HALF_DOWN);
-                check = false;
+                if (userInputStr.matches("^\\d+(\\d{1,2})?$")) {
+                    userInput = new BigDecimal(userInputStr);
+                    if (userInput.compareTo(BigDecimal.ZERO) > 0) {
+                        check = false;
+                    }else {
+                        System.out.println("0以下は入力できません。やり直してください。");
+                    }
+                }else {
+                    System.out.println("小数第二位まで入力可能です。");
+                }
             }catch (NumberFormatException e) {
                 System.out.println("数字を入力してください。");
             }
@@ -120,13 +139,11 @@ public class TradeValidation {
         return userInput;
     }
 
-    public LocalDateTime addInputDatetime() {
+    public static LocalDateTime addInputDatetime() {
         LocalDateTime today = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
         System.out.println("入力日時；" + today);
         System.out.println("ーーー入力完了ーーー");
         return today;
     }
-
-
 }
 

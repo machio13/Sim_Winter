@@ -1,4 +1,4 @@
-package SimWinter;
+package simwinter.master;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MarketCsvReader {
+public class MasterCsvReader {
 
     public static List<Stock> readMarketCsv(File marketFile) {
         List<Stock> stockersList = new ArrayList<>();
@@ -16,6 +16,7 @@ public class MarketCsvReader {
         String line = "";
 
         try (BufferedReader bufferedReader = new BufferedReader(new FileReader(marketFile))){
+
             bufferedReader.readLine();
 
             while ((line = bufferedReader.readLine()) != null) {

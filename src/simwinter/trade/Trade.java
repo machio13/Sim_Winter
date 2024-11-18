@@ -1,18 +1,20 @@
-package SimWinter;
+package simwinter.trade;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class Trade {
     private LocalDateTime tradedDatetime;
+    private String tradeTicker;
     private String tradeName;
-    private String tradeSide;
+    private TradeSide tradeSide;
     private long tradeQuantity;
     private BigDecimal tradedUnitPrice;
     private LocalDateTime inputDatetime;
 
-    public Trade(LocalDateTime tradedDatetime, String tradeName, String tradeSide, long tradeQuantity, BigDecimal tradedUnitPrice, LocalDateTime inputDatetime) {
+    public Trade(LocalDateTime tradedDatetime, String tradeTicker, String tradeName, TradeSide tradeSide, long tradeQuantity, BigDecimal tradedUnitPrice, LocalDateTime inputDatetime) {
         this.tradedDatetime = tradedDatetime;
+        this.tradeTicker = tradeTicker;
         this.tradeName = tradeName;
         this.tradeSide = tradeSide;
         this.tradeQuantity = tradeQuantity;
@@ -24,47 +26,27 @@ public class Trade {
         return tradedDatetime;
     }
 
-    public void setTradedDatetime(LocalDateTime tradedDatetime) {
-        this.tradedDatetime = tradedDatetime;
+    public String getTradeTicker() {
+        return tradeTicker;
     }
 
     public String getTradeName() {
         return tradeName;
     }
 
-    public void setTradeName(String tradeName) {
-        this.tradeName = tradeName;
-    }
-
-    public String getTradeSide() {
+    public TradeSide getTradeSide() {
         return tradeSide;
-    }
-
-    public void setTradeSide(String tradeSide) {
-        this.tradeSide = tradeSide;
     }
 
     public long getTradeQuantity() {
         return tradeQuantity;
     }
 
-    public void setTradeQuantity(long tradeQuantity) {
-        this.tradeQuantity = tradeQuantity;
-    }
-
     public BigDecimal getTradedUnitPrice() {
         return tradedUnitPrice;
     }
 
-    public void setTradedUnitPrice(BigDecimal tradedUnitPrice) {
-        this.tradedUnitPrice = tradedUnitPrice;
-    }
-
     public LocalDateTime getInputDatetime() {
         return inputDatetime;
-    }
-
-    public void setInputDatetime(LocalDateTime inputDatetime) {
-        this.inputDatetime = inputDatetime;
     }
 }

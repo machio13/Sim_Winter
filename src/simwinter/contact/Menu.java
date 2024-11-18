@@ -1,4 +1,13 @@
-package SimWinter;
+package simwinter.contact;
+
+import simwinter.master.MasterCsvDisplay;
+import simwinter.master.MasterCsvReader;
+import simwinter.master.MasterCsvWriter;
+import simwinter.master.Stock;
+import simwinter.trade.Trade;
+import simwinter.trade.TradeCsvDisplay;
+import simwinter.trade.TradeCsvReader;
+import simwinter.trade.TradeCsvWriter;
 
 import java.io.File;
 import java.util.List;
@@ -19,19 +28,19 @@ public class Menu {
             System.out.println("9. アプリケーションを終了します");
             System.out.print("入力してください；");
             String userInput = scanner.nextLine();
-            File marketCsvFile = new File("src/NewSimSummer/Market.csv");
-            File tradeCsvFile = new File("src/NewSimSummer/TradeData.csv");
+            File marketCsvFile = new File("src/SimWinter/csvfile/Master.csv");
+            File tradeCsvFile = new File("src/SimWinter/csvfile/TradeData.csv");
 
             switch (userInput) {
                 case "1" -> {
                     System.out.println("「銘柄マスタ一覧表示」が選択されました。");
-                    List<Stock> marketCsvReader = MarketCsvReader.readMarketCsv(marketCsvFile);
-                    MarketCsvDisplay marketDisplay = new MarketCsvDisplay();
+                    List<Stock> marketCsvReader = MasterCsvReader.readMarketCsv(marketCsvFile);
+                    MasterCsvDisplay marketDisplay = new MasterCsvDisplay();
                     marketDisplay.shouMarket(marketCsvReader);
                 }
                 case "2" -> {
                     System.out.println("「銘柄マスタ新規登録」が選択されました。");
-                    PlusMarketWriter plusMarketWriter = new PlusMarketWriter();
+                    MasterCsvWriter plusMarketWriter = new MasterCsvWriter();
                     plusMarketWriter.writeMarket(marketCsvFile);
                 }
                 case "3" -> {

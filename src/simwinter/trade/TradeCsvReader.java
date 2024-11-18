@@ -1,4 +1,4 @@
-package SimWinter;
+package simwinter.trade;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -22,11 +22,14 @@ public class TradeCsvReader {
             while ((line = bufferedReader.readLine()) != null) {
                 String[] wordBox = line.split(lineSplit);
                 LocalDateTime replaceTDTime = LocalDateTime.parse(wordBox[0]);
-                long replaceQuantity = Long.parseLong(wordBox[3]);
-                BigDecimal replaceUnitPrice = new BigDecimal(wordBox[4]);
-                LocalDateTime replaceInputDatetime = LocalDateTime.parse(wordBox[5]);
+                String ticker = wordBox[1];
+                String name = wordBox[2];
+                TradeSide side = TradeSide.valueOf(wordBox[3]);
+                long replaceQuantity = Long.parseLong(wordBox[4]);
+                BigDecimal replaceUnitPrice = new BigDecimal(wordBox[5]);
+                LocalDateTime replaceInputDatetime = LocalDateTime.parse(wordBox[6]);
 
-                tradeList.add(new Trade(replaceTDTime, wordBox[1], wordBox[2], replaceQuantity, replaceUnitPrice, replaceInputDatetime));
+                tradeList.add(new Trade(replaceTDTime, ticker, name, side, replaceQuantity, replaceUnitPrice, replaceInputDatetime));
             }
         }catch (IOException e) {
             System.out.println("ファイルが正常に読み込めません。");

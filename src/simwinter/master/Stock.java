@@ -1,4 +1,4 @@
-package SimWinter;
+package simwinter.master;
 
 import java.math.BigDecimal;
 

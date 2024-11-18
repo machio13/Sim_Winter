@@ -1,10 +1,13 @@
-package SimWinter;
+package simwinter.master;
+
+import simwinter.CutName;
+import simwinter.Formater;
 
 import java.util.List;
 
 
 
-public class MarketCsvDisplay extends CutName{
+public class MasterCsvDisplay extends CutName{
 
     public void shouMarket(List<Stock> stockersList) {
         System.out.println("|===========================================================================|");
@@ -23,7 +26,7 @@ public class MarketCsvDisplay extends CutName{
     }
 
     @Override
-    int cutNum() {
+    public int cutNum() {
         return 34;
     }
 }

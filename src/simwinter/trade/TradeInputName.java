@@ -1,11 +1,11 @@
-package SimWinter;
+package simwinter.trade;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 
-public class EqualName {
+public class TradeInputName {
     public static String isEqualName(File masterFile, String ticker) {
 
         String lineSplit = ",";
