@@ -1,6 +1,6 @@
 package simwinter.master;
 
-import simwinter.Checker;
+import simwinter.Checks;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -16,7 +16,7 @@ public class MasterValidation {
         while (check) {
             System.out.print("銘柄名>");
             userInput = scanner.nextLine();
-            if (Checker.isNameCheck(marketFile, userInput)) {
+            if (Checks.isNameCheck(marketFile, userInput)) {
                 System.out.println("既に記入済み");
             }else if (userInput.matches("[a-zA-Z0-9 .()]*")) {
                 check = false;
@@ -34,10 +34,10 @@ public class MasterValidation {
         while (check) {
             System.out.print("銘柄コード>");
             userInput = scanner.nextLine();
-            if (Checker.isTickerCheck(marketFile, userInput)) {
+            if (Checks.isTickerCheck(marketFile, userInput)) {
                 System.out.println("同じ銘柄コードが既に記入済み。");
             }
-            if (userInput.matches("^\\d{4}$|^[0-9][0-9ACDFGHJKLMNPRSTUWXY][0-9][0-9ACDFGHJKLMNPRSTUWXY]")) {
+            else if (userInput.matches("^\\d{4}$|^[0-9][0-9ACDFGHJKLMNPRSTUWXY][0-9][0-9ACDFGHJKLMNPRSTUWXY]")) {
                 check = false;
             }else {
                 System.out.println("正しく入力し直してください。");

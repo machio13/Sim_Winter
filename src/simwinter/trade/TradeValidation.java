@@ -1,7 +1,6 @@
 package simwinter.trade;
 
-import simwinter.Checker;
-import simwinter.CutName;
+import simwinter.Checks;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -40,7 +39,6 @@ public class TradeValidation {
                                 check = false;
                             } else {
                                 System.out.println("平日ですが時間外です。");
-                                check = true;
                             }
                         }
                     }
@@ -60,7 +58,7 @@ public class TradeValidation {
         while (check) {
             System.out.print("銘柄コード>");
             userInput = scanner.nextLine();
-            if (Checker.isTickerCheck(masterFile, userInput)) {
+            if (Checks.isTickerCheck(masterFile, userInput)) {
                 System.out.println("正常な入力です");
                 check = false;
             }else {
@@ -122,7 +120,7 @@ public class TradeValidation {
             System.out.print("取引単価(小数第二位まで可能)>");
             userInputStr = scanner.nextLine();
             try {
-                if (userInputStr.matches("^\\d+(\\d{1,2})?$")) {
+                if (userInputStr.matches("^\\d+(\\.\\d{1,2})?$")) {
                     userInput = new BigDecimal(userInputStr);
                     if (userInput.compareTo(BigDecimal.ZERO) > 0) {
                         check = false;
@@ -140,10 +138,12 @@ public class TradeValidation {
     }
 
     public static LocalDateTime addInputDatetime() {
-        LocalDateTime today = LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES);
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd/HH:mm");
+        String today = formatter.format(now);
+        LocalDateTime Datetime = LocalDateTime.parse(today, formatter);
         System.out.println("入力日時；" + today);
         System.out.println("ーーー入力完了ーーー");
-        return today;
+        return Datetime;
     }
 }
-
