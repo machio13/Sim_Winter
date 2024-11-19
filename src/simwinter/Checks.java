@@ -32,11 +32,11 @@ public class Checks {
         return false;
     }
 
-    public static long quantitySetting(String ticker, LocalDateTime time, File tradeFile) {
+    public static long quantityCheck(String ticker, LocalDateTime time, File tradeFile) {
         List<Trade> tradeList = TradeCsvReader.readTradeCsv(tradeFile);
         long totalQuantity = 0;
         for (Trade trade : tradeList) {
-            if (trade.getTradeTicker().equals(ticker) && LocalDateTime.now().isBefore(time)) {
+            if (trade.getTradeTicker().equals(ticker) && time.isAfter(trade.getTradedDatetime())) {
                 if (trade.getTradeSide() == TradeSide.Buy) {
                     totalQuantity += trade.getTradeQuantity();
                 }else if (trade.getTradeSide() == TradeSide.Sell){
@@ -45,5 +45,29 @@ public class Checks {
             }
         }
         return totalQuantity;
+    }
+
+    public static boolean tradedDatetimeCheck(String ticker, LocalDateTime userInputTime, File tradeFile) {
+        List<Trade> tradeList = TradeCsvReader.readTradeCsv(tradeFile);
+
+        LocalDateTime maxTradedDatetime = null;
+        for (Trade trade : tradeList) {
+            maxTradedDatetime = trade.getTradedDatetime();
+            if (trade.getTradeTicker().equals(ticker)) {
+
+                if (trade.getTradedDatetime().isAfter(maxTradedDatetime)) {
+                    maxTradedDatetime = trade.getTradedDatetime();
+                }
+
+            }else {
+                maxTradedDatetime = trade.getTradedDatetime();
+            }
+        }
+        if (userInputTime.isAfter(maxTradedDatetime)) {
+            System.out.println("trueです");
+            return true;
+        }
+        System.out.println("フォルスです");
+        return false;
     }
 }

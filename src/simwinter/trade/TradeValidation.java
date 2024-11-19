@@ -9,13 +9,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
-import java.time.temporal.ChronoUnit;
 import java.util.Scanner;
 
 public class TradeValidation {
     static Scanner scanner = new Scanner(System.in);
 
-    public static LocalDateTime addTradeTime() {
+    public static LocalDateTime addTradeTime(String ticker, File tradeFile) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuu-MM-dd/HH:mm").withResolverStyle(ResolverStyle.STRICT);
         String userInputStr = "";
         LocalDateTime userInput = null;
@@ -27,23 +26,28 @@ public class TradeValidation {
             try{
                 userInput = LocalDateTime.parse(userInputStr, formatter);
                 DayOfWeek dayOfWeek = userInput.getDayOfWeek();
-                if (userInput.isBefore(today) || userInput.equals(today)) {
-                    switch (dayOfWeek) {
-                        case SATURDAY, SUNDAY -> {
-                            System.out.println("土日で時間外");
-                        }
-                        default -> {
-                            if (userInput.getHour() >= 9 && userInput.getHour() <= 14) {
-                                check = false;
-                            } else if (userInput.getHour() == 15 && userInput.getMinute() <= 30) {
-                                check = false;
-                            } else {
-                                System.out.println("平日ですが時間外です。");
+                if (Checks.tradedDatetimeCheck(ticker, userInput, tradeFile)) {
+
+                    if (userInput.isBefore(today) || userInput.equals(today)) {
+                        switch (dayOfWeek) {
+                            case SATURDAY, SUNDAY -> {
+                                System.out.println("土日で時間外");
+                            }
+                            default -> {
+                                if (userInput.getHour() >= 9 && userInput.getHour() <= 14) {
+                                    check = false;
+                                } else if (userInput.getHour() == 15 && userInput.getMinute() <= 30) {
+                                    check = false;
+                                } else {
+                                    System.out.println("平日ですが時間外です。");
+                                }
                             }
                         }
+                    } else {
+                        System.out.println("日付が未来になっています。");
                     }
                 }else {
-                    System.out.println("日付が未来になっています。");
+                    System.out.println("最新の取引時間より前の時間を入力しています。不可能。");
                 }
             }catch (DateTimeParseException e) {
                 System.out.println("フォーマット通り記入し直して");
@@ -68,7 +72,7 @@ public class TradeValidation {
         return userInput;
     }
 
-    public static TradeSide addSide() {
+    public static TradeSide addSide(String ticker, LocalDateTime time, File tradeFile) {
         String userInputStr = "";
         TradeSide userInput = null;
         boolean check = true;
@@ -78,7 +82,13 @@ public class TradeValidation {
             switch (userInputStr) {
                 case "Sell" -> {
                     userInput = TradeSide.Sell;
-                    check = false;
+                    long checkQuantity = Checks.quantityCheck(ticker, time, tradeFile);
+                    System.out.println(checkQuantity);
+                    if (checkQuantity > 0) {
+                        check = false;
+                    }else {
+                        System.out.println("保有数が0以下です。");
+                    }
                 }
                 case "Buy" -> {
                     userInput = TradeSide.Buy;
@@ -91,7 +101,7 @@ public class TradeValidation {
         }return userInput;
     }
 
-    public static long addQuantity() {
+    public static long addQuantity(String ticker,LocalDateTime time, File tradeFile) {
         String userInputStr = "";
         long userInput = 0;
         boolean check = true;
@@ -101,7 +111,12 @@ public class TradeValidation {
             try {
                 userInput = Long.parseLong(userInputStr);
                 if (userInput % 100 == 0 && userInput > 0) {
-                    check = false;
+                    long checkQuantity = Checks.quantityCheck(ticker, time, tradeFile);
+                    if (userInput < checkQuantity) {
+                        check = false;
+                    }else {
+                        System.out.println("保有数が" + checkQuantity + "なので" + userInput + "は不可能です。");
+                    }
                 }else {
                     System.out.println("100株単位で入力してください");
                 }

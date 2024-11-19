@@ -34,7 +34,7 @@ public class TradeCsvReader {
         }catch (IOException e) {
             System.out.println("ファイルが正常に読み込めません。");
         }
-        Collections.sort(tradeList, Comparator.comparing(Trade::getInputDatetime));
+        Collections.sort(tradeList, Comparator.comparing(Trade::getTradedDatetime).reversed());
         return tradeList;
     }
 }
