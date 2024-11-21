@@ -21,13 +21,15 @@ public class PositionMultiply {
 
                     if (trade.getTradeSide().equals(TradeSide.Buy)) {
                         position.addQuantity(trade.getTradeQuantity());
-                    }else if (trade.getTradeSide().equals(TradeSide.Sell)){
-                        position.addQuantity(-trade.getTradeQuantity());
+                    }else {
+                        position.minusQuantity(trade.getTradeQuantity());
                     }
                 }
             }
             if (!check) {
-                Position position = new Position(trade.getTradeName(), trade.getTradeTicker(), trade.getTradeQuantity());
+                long initialQuantity = trade.getTradeSide().equals(TradeSide.Buy)
+                        ? trade.getTradeQuantity() : -trade.getTradeQuantity();
+                Position position = new Position(trade.getTradeName(), trade.getTradeTicker(), initialQuantity);
                 positionList.add(position);
             }
         }

@@ -14,7 +14,7 @@ public class TradeCsvWriter {
         LocalDateTime tradedDatetime = TradeValidation.addTradeTime(ticker, tradeFile);
         String name = "";
         TradeSide side = TradeValidation.addSide(ticker, tradedDatetime, tradeFile);
-        long quantity = TradeValidation.addQuantity(ticker,tradedDatetime, tradeFile);
+        long quantity = TradeValidation.addQuantity(ticker,tradedDatetime, tradeFile, side);
         BigDecimal tradeUnitPrice = TradeValidation.addUnitPrice();
         LocalDateTime inputDatetime = TradeValidation.addInputDatetime();
 

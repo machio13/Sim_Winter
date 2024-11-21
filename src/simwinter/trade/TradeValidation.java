@@ -26,6 +26,7 @@ public class TradeValidation {
             try{
                 userInput = LocalDateTime.parse(userInputStr, formatter);
                 DayOfWeek dayOfWeek = userInput.getDayOfWeek();
+
                 if (Checks.tradedDatetimeCheck(ticker, userInput, tradeFile)) {
 
                     if (userInput.isBefore(today) || userInput.equals(today)) {
@@ -101,7 +102,7 @@ public class TradeValidation {
         }return userInput;
     }
 
-    public static long addQuantity(String ticker,LocalDateTime time, File tradeFile) {
+    public static long addQuantity(String ticker,LocalDateTime time, File tradeFile, TradeSide side) {
         String userInputStr = "";
         long userInput = 0;
         boolean check = true;
@@ -112,10 +113,15 @@ public class TradeValidation {
                 userInput = Long.parseLong(userInputStr);
                 if (userInput % 100 == 0 && userInput > 0) {
                     long checkQuantity = Checks.quantityCheck(ticker, time, tradeFile);
-                    if (userInput < checkQuantity) {
+                    if (Checks.sideCheck(side)) {
                         check = false;
+
                     }else {
-                        System.out.println("保有数が" + checkQuantity + "なので" + userInput + "は不可能です。");
+                        if (userInput <= checkQuantity) {
+                            check = false;
+                        } else {
+                            System.out.println("保有数が" + checkQuantity + "なので" + userInput + "は不可能です。");
+                        }
                     }
                 }else {
                     System.out.println("100株単位で入力してください");

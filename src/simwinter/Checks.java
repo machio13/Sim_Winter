@@ -52,22 +52,30 @@ public class Checks {
 
         LocalDateTime maxTradedDatetime = null;
         for (Trade trade : tradeList) {
-            maxTradedDatetime = trade.getTradedDatetime();
             if (trade.getTradeTicker().equals(ticker)) {
-
-                if (trade.getTradedDatetime().isAfter(maxTradedDatetime)) {
+                if (maxTradedDatetime == null || trade.getTradedDatetime().isAfter(maxTradedDatetime)) {
                     maxTradedDatetime = trade.getTradedDatetime();
                 }
-
-            }else {
-                maxTradedDatetime = trade.getTradedDatetime();
             }
         }
-        if (userInputTime.isAfter(maxTradedDatetime)) {
-            System.out.println("trueです");
+
+        // 該当するティッカーが見つからなかった場合、userInputTime を返す
+        if (maxTradedDatetime == null) {
             return true;
         }
-        System.out.println("フォルスです");
+        else if (userInputTime.isAfter(maxTradedDatetime)) {
+            System.out.println("入力時間：" + userInputTime);
+            System.out.println("最新時間：" + maxTradedDatetime);
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean sideCheck(TradeSide side) {
+
+        if (side.equals(TradeSide.Buy)) {
+            return true;
+        }
         return false;
     }
 }
