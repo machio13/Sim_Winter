@@ -1,8 +1,6 @@
 package simwinter.contact;
 
-import simwinter.Position;
-import simwinter.PositionDisplay;
-import simwinter.PositionMultiply;
+import simwinter.*;
 import simwinter.master.MasterCsvDisplay;
 import simwinter.master.MasterCsvReader;
 import simwinter.master.MasterCsvWriter;
@@ -34,6 +32,7 @@ public class Menu {
             String userInput = scanner.nextLine();
             File marketCsvFile = new File("src/SimWinter/csvfile/Master.csv");
             File tradeCsvFile = new File("src/SimWinter/csvfile/TradeData.csv");
+            File marketPriceFile = new File("src/simwinter/MarketPrice.csv");
 
             switch (userInput) {
                 case "1" -> {
@@ -61,9 +60,13 @@ public class Menu {
                 case "5" -> {
                     System.out.println("「保有ポジション表示」が選択されました。");
                     List<Trade> tradeList = TradeCsvReader.readTradeCsv(tradeCsvFile);
-                    List<Position> positionList = PositionMultiply.sumPosition(tradeList);
-                    PositionDisplay positionDisplay = new PositionDisplay();
-                    positionDisplay.showPosition(positionList);
+                    List<MarketPrice> marketPriceList = MarketPriceReader.readMarketPrice(marketPriceFile);
+//                    List<Position> positionList = PositionMultiply.sumPosition(tradeList);
+//                    PositionDisplay positionDisplay = new PositionDisplay();
+                    List<Position> positionList = PositionNewInput.newPosition(tradeList, marketPriceList);
+//                    positionDisplay.showPosition(positionList);
+                    PositionNewDisplay positionNewDisplay = new PositionNewDisplay();
+                    positionNewDisplay.allShowPosition(positionList);
                 }
                 case "9" -> {
                     System.out.println("アプリケーションを終了します。");

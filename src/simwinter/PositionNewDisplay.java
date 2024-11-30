@@ -2,6 +2,7 @@ package simwinter;
 
 import simwinter.trade.Trade;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class PositionNewDisplay {
@@ -17,11 +18,20 @@ public class PositionNewDisplay {
 //        評価損益＝評価額ー取得価額
 
 
-    public void allShowPosition(List<Trade> tradeList, List<Position> positionList, List<MarketPrice> marketPriceList) {
+    public void allShowPosition(List<Position> positionList) {
         System.out.println("|========================================================================================================================================================|");
         System.out.println("| Ticker | Name                          | Quantity        | Average Unit Price | Realized Profit And Loss | Valuation      | Unrealized Profit And Loss |");
         System.out.println("|--------------------------------------------------------------------------------------------------------------------------------------------------------|");
 
-        for ()
+        for (Position position : positionList) {
+            String ticker = position.getTicker();
+            String name = position.getName();
+            long quantity = position.getQuantity();
+            BigDecimal average = position.getAverageUnitPrice();
+            BigDecimal realize = position.getRealizedProfitAndLoss();
+            BigDecimal valuation = position.getValuation();
+            BigDecimal une = position.getUnrealizedProfitAndLoss();
+            System.out.printf("| %s | %s | %s | %s | %s | %s | %s |", ticker, name, quantity, average, realize, valuation, une);
+        }
     }
 }

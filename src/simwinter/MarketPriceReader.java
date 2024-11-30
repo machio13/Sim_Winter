@@ -9,7 +9,7 @@ import java.util.List;
 
 public class MarketPriceReader {
 
-    public List<MarketPrice> readMarketPrice(File marketPriceFile) {
+    public static List<MarketPrice> readMarketPrice(File marketPriceFile) {
         List<MarketPrice> marketPriceList = new ArrayList<>();
 
         String lineSplit = ",";
@@ -20,7 +20,7 @@ public class MarketPriceReader {
                 String[] data = line.split(lineSplit);
 
                 String ticker = data[0];
-                long marketPrice = Long.parseLong(data[1]);
+                double marketPrice = Double.parseDouble(data[1]);
 
                 marketPriceList.add(new MarketPrice(ticker, marketPrice));
             }

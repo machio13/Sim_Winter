@@ -68,4 +68,16 @@ public class Position {
     public void minusQuantity(long quantity) {
         this.quantity -= quantity;
     }
+
+    public void  addAverage(BigDecimal num) {
+        this.averageUnitPrice = num;
+    }
+
+    public void addRealizedProfitAndLoss(BigDecimal num) {
+        this.realizedProfitAndLoss = num;
+    }
+
+    public void addValuation(BigDecimal num) {
+        this.valuation = num;
+    }
 }
