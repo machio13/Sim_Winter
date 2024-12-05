@@ -1,13 +1,53 @@
 package simwinter;
 
-import simwinter.trade.Trade;
-
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-public class PositionNewDisplay {
-    //実現損益＝売却数量＊(売却価格ー取得単価)
-    //買い付け後の平均取得単価＝（買い付け前の保有数量＊平均取得単価＋買い付けた数量＊取得単価）/ 買い付け前の保有数量＋取得単価
+public class PositionNewDisplay extends CutName{
+
+    public void allShowPosition(List<Position> positionList, List<MarketPrice> marketPriceList) {
+        Map<String, MarketPrice> marketPriceMap = marketPriceList.stream()
+                .collect(Collectors.toMap(MarketPrice::getTicker, mp -> mp));
+
+        System.out.println("|========================================================================================================================================================|");
+        System.out.println("| Ticker | Name                          | Quantity        | Average Unit Price | Realized Profit And Loss | Valuation      | Unrealized Profit And Loss |");
+        System.out.println("|--------------------------------------------------------------------------------------------------------------------------------------------------------|");
+
+        for (Position position : positionList) {
+//            MarketPrice marketPrice = marketPriceMap.get(position.getTicker());
+
+            String ticker = position.getTicker();
+            String name = isCutName(position.getName());
+            long quantity = position.getQuantity();
+            BigDecimal average = position.getAverageUnitPrice();
+            BigDecimal realizePnL = position.getRealizedProfitAndLoss().setScale(0, BigDecimal.ROUND_HALF_DOWN);
+
+            BigDecimal valuation = Validation.isValuation(position, marketPriceList); // 各銘柄の評価額を計算
+            BigDecimal acquisitionCost = Validation.isAcquisitionCost(position.getQuantity(), average); // 取得価額を計算
+            BigDecimal unrealizedPnL = valuation.subtract(acquisitionCost); // 未実現損益を計算
+
+            String formattedAverage = Formater.isBigDecimalFormat(average);
+            String formattedRealizePnL = Formater.isBigDecimalFormat(realizePnL);
+            String formattedValuation = Formater.isBigDecimalFormat(valuation);
+            String formattedUnrealizedPnL = Formater.isBigDecimalFormat(unrealizedPnL);
+
+            System.out.printf("|  %4s  | %-29s | %15s | %18s | %24s | %14s | %26s |\n",
+                    ticker, name, quantity, formattedAverage, formattedRealizePnL, formattedValuation, formattedUnrealizedPnL); // 結果を出力
+//            System.out.println(marketPrice.getPrice());
+        }
+        System.out.println("|========================================================================================================================================================|");
+    }
+
+    @Override
+    public int cutNum() {
+        return 29;
+    }
+}
+
+//実現損益＝売却数量＊(売却価格ー取得単価)
+//買い付け後の平均取得単価＝（買い付け前の保有数量＊平均取得単価＋買い付けた数量＊取得単価）/ 買い付け前の保有数量＋取得単価
 //        保有するポジションを平均取得単価で価値算出したものを取得価額
 //        取得価額＝保有数量＊平均取得価格
 
@@ -16,22 +56,3 @@ public class PositionNewDisplay {
 
 //        評価額と取得価額の差額を評価損益または未実現損益という。
 //        評価損益＝評価額ー取得価額
-
-
-    public void allShowPosition(List<Position> positionList) {
-        System.out.println("|========================================================================================================================================================|");
-        System.out.println("| Ticker | Name                          | Quantity        | Average Unit Price | Realized Profit And Loss | Valuation      | Unrealized Profit And Loss |");
-        System.out.println("|--------------------------------------------------------------------------------------------------------------------------------------------------------|");
-
-        for (Position position : positionList) {
-            String ticker = position.getTicker();
-            String name = position.getName();
-            long quantity = position.getQuantity();
-            BigDecimal average = position.getAverageUnitPrice();
-            BigDecimal realize = position.getRealizedProfitAndLoss();
-            BigDecimal valuation = position.getValuation();
-            BigDecimal une = position.getUnrealizedProfitAndLoss();
-            System.out.printf("| %s | %s | %s | %s | %s | %s | %s |", ticker, name, quantity, average, realize, valuation, une);
-        }
-    }
-}

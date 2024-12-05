@@ -1,19 +1,21 @@
 package simwinter;
 
+import java.math.BigDecimal;
+
 public class MarketPrice {
     private String ticker;
-    private double marketPrice;
+    private BigDecimal price;
 
-    public MarketPrice(String ticker, double marketPrice) {
+    public MarketPrice(String ticker, BigDecimal price) {
         this.ticker = ticker;
-        this.marketPrice = marketPrice;
+        this.price = price;
     }
 
     public String getTicker() {
         return ticker;
     }
 
-    public double getMarketPrice() {
-        return marketPrice;
+    public BigDecimal getPrice() {
+        return price;
     }
 }

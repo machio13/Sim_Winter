@@ -4,14 +4,14 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class Position {
-    private LocalDateTime tradedDatetime;
-    private String name;
-    private String ticker;
-    private long quantity; //保有数量
-    private BigDecimal averageUnitPrice; //平均取得単価
-    private BigDecimal realizedProfitAndLoss; //実現損益
-    private BigDecimal valuation; //評価額
-    private BigDecimal unrealizedProfitAndLoss; //評価損益
+    String name;
+    String ticker;
+    long quantity; //保有数量
+    BigDecimal averageUnitPrice; //平均取得単価
+    BigDecimal realizedProfitAndLoss; //実現損益
+    BigDecimal acquisitionCost; //取得価額
+    BigDecimal valuation; //評価額
+    BigDecimal unrealizedProfitAndLoss; //評価損益
 
     public Position(String name, String ticker,long quantity) {
         this.name = name;
@@ -29,8 +29,15 @@ public class Position {
         this.unrealizedProfitAndLoss = unrealizedProfitAndLoss;
     }
 
-    public LocalDateTime getTradedDatetime() {
-        return tradedDatetime;
+    public Position(String ticker, String name, long quantity, BigDecimal averageUnitPrice, BigDecimal acquisitionCost, BigDecimal realizedProfitAndLoss, BigDecimal valuation, BigDecimal unrealizedProfitAndLoss) {
+        this.ticker = ticker;
+        this.name = name;
+        this.quantity = quantity;
+        this.averageUnitPrice = averageUnitPrice;
+        this.acquisitionCost = acquisitionCost;
+        this.realizedProfitAndLoss = realizedProfitAndLoss;
+        this.valuation = valuation;
+        this.unrealizedProfitAndLoss = unrealizedProfitAndLoss;
     }
 
     public String getName() {
@@ -47,6 +54,10 @@ public class Position {
 
     public BigDecimal getAverageUnitPrice() {
         return averageUnitPrice;
+    }
+
+    public BigDecimal getAcquisitionCost() {
+        return acquisitionCost;
     }
 
     public BigDecimal getRealizedProfitAndLoss() {
@@ -69,15 +80,4 @@ public class Position {
         this.quantity -= quantity;
     }
 
-    public void  addAverage(BigDecimal num) {
-        this.averageUnitPrice = num;
-    }
-
-    public void addRealizedProfitAndLoss(BigDecimal num) {
-        this.realizedProfitAndLoss = num;
-    }
-
-    public void addValuation(BigDecimal num) {
-        this.valuation = num;
-    }
 }

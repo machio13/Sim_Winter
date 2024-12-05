@@ -61,12 +61,9 @@ public class Menu {
                     System.out.println("「保有ポジション表示」が選択されました。");
                     List<Trade> tradeList = TradeCsvReader.readTradeCsv(tradeCsvFile);
                     List<MarketPrice> marketPriceList = MarketPriceReader.readMarketPrice(marketPriceFile);
-//                    List<Position> positionList = PositionMultiply.sumPosition(tradeList);
-//                    PositionDisplay positionDisplay = new PositionDisplay();
                     List<Position> positionList = PositionNewInput.newPosition(tradeList, marketPriceList);
-//                    positionDisplay.showPosition(positionList);
                     PositionNewDisplay positionNewDisplay = new PositionNewDisplay();
-                    positionNewDisplay.allShowPosition(positionList);
+                    positionNewDisplay.allShowPosition(positionList, marketPriceList);
                 }
                 case "9" -> {
                     System.out.println("アプリケーションを終了します。");

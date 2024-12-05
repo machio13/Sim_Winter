@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class MarketPriceReader {
                 String[] data = line.split(lineSplit);
 
                 String ticker = data[0];
-                double marketPrice = Double.parseDouble(data[1]);
+                BigDecimal marketPrice = new BigDecimal(data[1]);
 
                 marketPriceList.add(new MarketPrice(ticker, marketPrice));
             }
