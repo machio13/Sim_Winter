@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class Validation {
+public class MakeValuation {
 
     public static BigDecimal isAcquisitionCost(long positionQuantity, BigDecimal averageUnitPrice) {
         BigDecimal quantity = new BigDecimal(positionQuantity);
