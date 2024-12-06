@@ -72,12 +72,12 @@ public class Position {
         return unrealizedProfitAndLoss;
     }
 
-    public void addQuantity(long quantity) {
-        this.quantity += quantity;
-    }
-
-    public void minusQuantity(long quantity) {
-        this.quantity -= quantity;
-    }
+//    public void addQuantity(long quantity) {
+//        this.quantity += quantity;
+//    }
+//
+//    public void minusQuantity(long quantity) {
+//        this.quantity -= quantity;
+//    }
 
 }

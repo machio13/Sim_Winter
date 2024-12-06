@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-public class PositionMultiply {
+public class PositionInput {
 
     public static List<Position> sumPosition(List<Trade> tradeList) {
         List<Position> positionList = new ArrayList<>();
@@ -20,15 +20,14 @@ public class PositionMultiply {
                     check = true;
 
                     if (trade.getTradeSide().equals(TradeSide.Buy)) {
-                        position.addQuantity(trade.getTradeQuantity());
-                    }else {
-                        position.minusQuantity(trade.getTradeQuantity());
+                        position.quantity += trade.getTradeQuantity();
+                    } else {
+                        position.quantity -= trade.getTradeQuantity();
                     }
                 }
             }
             if (!check) {
-                long initialQuantity = trade.getTradeSide().equals(TradeSide.Buy)
-                        ? trade.getTradeQuantity() : -trade.getTradeQuantity();
+                long initialQuantity = trade.getTradeSide().equals(TradeSide.Buy) ? trade.getTradeQuantity() : -trade.getTradeQuantity();
                 Position position = new Position(trade.getTradeName(), trade.getTradeTicker(), initialQuantity);
                 positionList.add(position);
             }

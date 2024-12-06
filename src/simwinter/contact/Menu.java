@@ -26,9 +26,10 @@ public class Menu {
             System.out.println("2. 銘柄マスタ新規登録");
             System.out.println("3. 取引入力");
             System.out.println("4. 取引表示");
-            System.out.println("5. 保有ポジション表示");
+            System.out.println("5. Step6 保有ポジション表示");
+            System.out.println("6. Step7 保有ポジション表示");
             System.out.println("9. アプリケーションを終了します");
-            System.out.print("入力してください；");
+            System.out.print("入力してください:");
             String userInput = scanner.nextLine();
             File marketCsvFile = new File("src/SimWinter/csvfile/Master.csv");
             File tradeCsvFile = new File("src/SimWinter/csvfile/TradeData.csv");
@@ -58,7 +59,14 @@ public class Menu {
                     tradeDisplay.showTrade(tradeList);
                 }
                 case "5" -> {
-                    System.out.println("「保有ポジション表示」が選択されました。");
+                    System.out.println("「保有ポジション表示」が選択されました。スッテプ６");
+                    List<Trade> tradeList = TradeCsvReader.readTradeCsv(tradeCsvFile);
+                    List<Position> positionList = PositionInput.sumPosition(tradeList);
+                    PositionDisplay positionDisplay = new PositionDisplay();
+                    positionDisplay.showPosition(positionList);
+                }
+                case "6" -> {
+                    System.out.println("「保有ポジション表示」が選択されました。ステップ７");
                     List<Trade> tradeList = TradeCsvReader.readTradeCsv(tradeCsvFile);
                     List<MarketPrice> marketPriceList = MarketPriceReader.readMarketPrice(marketPriceFile);
                     List<Position> positionList = PositionNewInput.newPosition(tradeList, marketPriceList);
