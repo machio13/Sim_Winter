@@ -61,6 +61,12 @@ public class PositionNewInput {
                     averageUnitPrice = trade.getTradedUnitPrice();
                     Position position = new Position(trade.getTradeTicker(), trade.getTradeName(), initialQuantity, averageUnitPrice, realizeProfitAndLoss, valuation, unrealizedProfitAndLoss);
                     positionList.add(position);
+                } else if (marketPrice == null) {
+                    long initialQuantity = trade.getTradeSide().equals(TradeSide.Buy) ? trade.getTradeQuantity() : -trade.getTradeQuantity();
+                    realizeProfitAndLoss = BigDecimal.ZERO;
+                    averageUnitPrice = trade.getTradedUnitPrice();
+                    Position position = new Position(trade.getTradeTicker(), trade.getTradeName(), initialQuantity, averageUnitPrice, realizeProfitAndLoss, valuation, unrealizedProfitAndLoss);
+                    positionList.add(position);
                 }
             }
         }

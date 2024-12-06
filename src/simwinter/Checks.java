@@ -47,6 +47,7 @@ public class Checks {
         return totalQuantity;
     }
 
+    //　時間が未来になっていないか確認する↓
     public static boolean tradedDatetimeCheck(String ticker, LocalDateTime userInputTime, File tradeFile) {
         List<Trade> tradeList = TradeCsvReader.readTradeCsv(tradeFile);
 

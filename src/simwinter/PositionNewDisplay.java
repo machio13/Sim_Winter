@@ -2,40 +2,48 @@ package simwinter;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 public class PositionNewDisplay extends CutName{
 
     public void allShowPosition(List<Position> positionList, List<MarketPrice> marketPriceList) {
-        Map<String, MarketPrice> marketPriceMap = marketPriceList.stream()
-                .collect(Collectors.toMap(MarketPrice::getTicker, mp -> mp));
+
+        String formattedValuation;
+        String formattedUnrealizedPnL;
 
         System.out.println("|========================================================================================================================================================|");
         System.out.println("| Ticker | Name                          | Quantity        | Average Unit Price | Realized Profit And Loss | Valuation      | Unrealized Profit And Loss |");
         System.out.println("|--------------------------------------------------------------------------------------------------------------------------------------------------------|");
 
         for (Position position : positionList) {
-//            MarketPrice marketPrice = marketPriceMap.get(position.getTicker());
-
             String ticker = position.getTicker();
             String name = isCutName(position.getName());
             long quantity = position.getQuantity();
             BigDecimal average = position.getAverageUnitPrice();
             BigDecimal realizePnL = position.getRealizedProfitAndLoss().setScale(0, BigDecimal.ROUND_HALF_DOWN);
 
-            BigDecimal valuation = Validation.isValuation(position, marketPriceList); // 各銘柄の評価額を計算
+            BigDecimal valuation = Validation.isValuation(position, marketPriceList);// 各銘柄の評価額を計算
             BigDecimal acquisitionCost = Validation.isAcquisitionCost(position.getQuantity(), average); // 取得価額を計算
             BigDecimal unrealizedPnL = valuation.subtract(acquisitionCost); // 未実現損益を計算
 
             String formattedAverage = Formater.isBigDecimalFormat(average);
             String formattedRealizePnL = Formater.isBigDecimalFormat(realizePnL);
-            String formattedValuation = Formater.isBigDecimalFormat(valuation);
-            String formattedUnrealizedPnL = Formater.isBigDecimalFormat(unrealizedPnL);
+
+            if (valuation.equals(BigDecimal.ZERO)) {
+                formattedValuation = "N/A";
+                formattedUnrealizedPnL = "N/A";
+            }else {
+                formattedValuation = Formater.isBigDecimalFormat(valuation);
+                formattedUnrealizedPnL = Formater.isBigDecimalFormat(unrealizedPnL);
+            }
+
+//            if (unrealizedPnL.equals(BigDecimal.ZERO)) {
+//
+//            } else {
+//
+//            }
 
             System.out.printf("|  %4s  | %-29s | %15s | %18s | %24s | %14s | %26s |\n",
                     ticker, name, quantity, formattedAverage, formattedRealizePnL, formattedValuation, formattedUnrealizedPnL); // 結果を出力
-//            System.out.println(marketPrice.getPrice());
         }
         System.out.println("|========================================================================================================================================================|");
     }
