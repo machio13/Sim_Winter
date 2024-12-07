@@ -44,7 +44,7 @@ public class PositionNewInput {
                         BigDecimal tradeQuantity = new BigDecimal(trade.getTradeQuantity());
                         BigDecimal positionAverageUnitPrice = position.getAverageUnitPrice();
 
-                        if (position.getTicker().equals(marketPrice.getTicker())) {
+                        if (marketPrice == null || position.getTicker().equals(marketPrice.getTicker())) {
                             BigDecimal element = tradeUnitPrice.subtract(positionAverageUnitPrice);
 
                             position.realizedProfitAndLoss = tradeQuantity.multiply(element); //実現損益の変更
@@ -61,7 +61,7 @@ public class PositionNewInput {
                     averageUnitPrice = trade.getTradedUnitPrice();
                     Position position = new Position(trade.getTradeTicker(), trade.getTradeName(), initialQuantity, averageUnitPrice, realizeProfitAndLoss, valuation, unrealizedProfitAndLoss);
                     positionList.add(position);
-                } else if (marketPrice == null) {
+                } else if (marketPrice == null){
                     long initialQuantity = trade.getTradeSide().equals(TradeSide.Buy) ? trade.getTradeQuantity() : -trade.getTradeQuantity();
                     realizeProfitAndLoss = BigDecimal.ZERO;
                     averageUnitPrice = trade.getTradedUnitPrice();

@@ -18,7 +18,6 @@ public class PositionInput {
             for (Position position : positionList) {
                 if (position.getTicker().equals(trade.getTradeTicker())) {
                     check = true;
-
                     if (trade.getTradeSide().equals(TradeSide.Buy)) {
                         position.quantity += trade.getTradeQuantity();
                     } else {
