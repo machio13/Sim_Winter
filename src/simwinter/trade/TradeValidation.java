@@ -116,7 +116,7 @@ public class TradeValidation {
                     if (Checks.sideCheck(side)) {
                         check = false;
 
-                    }else {
+                    } else {
                         if (userInput <= checkQuantity) {
                             check = false;
                         } else {
