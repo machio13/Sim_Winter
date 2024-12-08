@@ -39,10 +39,10 @@ public class Checks {
             if (trade.getTradeTicker().equals(ticker) && time.isAfter(trade.getTradedDatetime())) {
                 if (trade.getTradeSide() == TradeSide.Buy) {
                     totalQuantity += trade.getTradeQuantity();
-                }else if (trade.getTradeSide() == TradeSide.Sell){
+                } else if (trade.getTradeSide() == TradeSide.Sell) {
                     totalQuantity -= trade.getTradeQuantity();
                 }
-            }
+            } //マイナスじゃないかを確認するメソッドを追加する
         }
         return totalQuantity;
     }
