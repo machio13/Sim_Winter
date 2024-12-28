@@ -18,7 +18,7 @@ public class MasterCsvDisplay extends CutName{
             String ticker = stock.getTicker();
             String name = isCutName(stock.getName());
             Market market = stock.getMarket();
-            String sharesIssued = Formater.isBigDecimalFormat(stock.getSharesIssued());
+            String sharesIssued = Formater.isSharesIssuedFormat(stock.getSharesIssued());
 
             System.out.printf("|  %-6s| %-34s | %-8s | %16s |\n", ticker, name, market, sharesIssued);
         }

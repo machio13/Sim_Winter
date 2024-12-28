@@ -1,9 +1,10 @@
-package simwinter.trade;
+package simwinter.trade.original;
 
 import simwinter.CutName;
 import simwinter.Formater;
+import simwinter.trade.Trade;
+import simwinter.trade.TradeSide;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 public class TradeCsvDisplay extends CutName {

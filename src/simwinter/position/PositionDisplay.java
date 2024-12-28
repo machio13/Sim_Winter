@@ -1,4 +1,7 @@
-package simwinter;
+package simwinter.position;
+
+import simwinter.CutName;
+import simwinter.Formater;
 
 import java.util.List;
 

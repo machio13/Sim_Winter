@@ -1,4 +1,4 @@
-package simwinter;
+package simwinter.position;
 
 import simwinter.trade.Trade;
 import simwinter.trade.TradeSide;
@@ -19,9 +19,9 @@ public class PositionInput {
                 if (position.getTicker().equals(trade.getTradeTicker())) {
                     check = true;
                     if (trade.getTradeSide().equals(TradeSide.Buy)) {
-                        position.quantity += trade.getTradeQuantity();
+                        position.setPlusQuantity(trade.getTradeQuantity());
                     } else {
-                        position.quantity -= trade.getTradeQuantity();
+                        position.setMinusQuantity(trade.getTradeQuantity());
                     }
                 }
             }

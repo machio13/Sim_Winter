@@ -1,4 +1,4 @@
-package simwinter;
+package simwinter.position;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -17,6 +17,7 @@ public class MakeValuation {
         Map<String, MarketPrice> marketPriceMap = marketPriceList.stream().collect(Collectors.toMap(MarketPrice::getTicker, mp -> mp));
 
         MarketPrice marketPrice = marketPriceMap.get(position.getTicker());
+
         if (marketPrice == null) {
             System.out.println("Market price not found for ticker: " + position.getTicker());
             return BigDecimal.ZERO; // 該当する時価がない場合は0を返す

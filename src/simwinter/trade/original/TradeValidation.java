@@ -1,6 +1,8 @@
-package simwinter.trade;
+package simwinter.trade.original;
 
 import simwinter.Checks;
+import simwinter.trade.Trade;
+import simwinter.trade.TradeSide;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -9,6 +11,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.time.format.ResolverStyle;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class TradeValidation {
@@ -27,28 +32,42 @@ public class TradeValidation {
                 userInput = LocalDateTime.parse(userInputStr, formatter);
                 DayOfWeek dayOfWeek = userInput.getDayOfWeek();
 
-                if (Checks.tradedDatetimeCheck(ticker, userInput, tradeFile)) {
+                if (Checks.tradedDatetimeCheck(ticker, tradeFile) == null
+                        || userInput.isAfter(Checks.tradedDatetimeCheck(ticker, tradeFile))
+                        || Checks.tradedDatetimeCheck(ticker, tradeFile).isEqual(userInput)) {
 
-                    if (userInput.isBefore(today) || userInput.equals(today)) {
-                        switch (dayOfWeek) {
-                            case SATURDAY, SUNDAY -> {
-                                System.out.println("土日で時間外");
-                            }
-                            default -> {
-                                if (userInput.getHour() >= 9 && userInput.getHour() <= 14) {
-                                    check = false;
-                                } else if (userInput.getHour() == 15 && userInput.getMinute() <= 30) {
-                                    check = false;
-                                } else {
-                                    System.out.println("平日ですが時間外です。");
+
+                    if (!(Checks.tradedDatetimeCheck(ticker, tradeFile).isEqual(userInput))
+                            && userInput.isAfter(Checks.tradedDatetimeCheck(ticker, tradeFile))) {
+
+                        if (userInput.isBefore(today) || userInput.equals(today)) {
+                            switch (dayOfWeek) {
+                                case SATURDAY, SUNDAY -> {
+                                    System.out.println("土日で時間外");
+                                }
+                                default -> {
+                                    if (userInput.getHour() >= 9 && userInput.getHour() <= 14) {
+                                        check = false;
+                                    } else if (userInput.getHour() == 15 && userInput.getMinute() <= 30) {
+                                        check = false;
+                                    } else {
+                                        System.out.println("平日ですが時間外です。");
+                                    }
                                 }
                             }
+                        } else {
+                            System.out.println("日付が未来になっています。");
+
                         }
-                    } else {
-                        System.out.println("日付が未来になっています。");
+                    }else {
+                        System.out.println("同時刻です。不可能。");
+                        System.out.println("入力日時：" + userInput);
+                        System.out.println("最新日時：" + Checks.tradedDatetimeCheck(ticker, tradeFile));
                     }
                 }else {
                     System.out.println("最新の取引時間より前の時間を入力しています。不可能。");
+                    System.out.println("入力日時：" + userInput);
+                    System.out.println("最新日時：" + Checks.tradedDatetimeCheck(ticker, tradeFile));
                 }
             }catch (DateTimeParseException e) {
                 System.out.println("フォーマット通り記入し直して");
@@ -166,5 +185,14 @@ public class TradeValidation {
         System.out.println("入力日時；" + today);
         System.out.println("ーーー入力完了ーーー");
         return Datetime;
+    }
+
+    public static Map<String, LocalDateTime> mapTradeTime(LocalDateTime maxTime, List<Trade> tradeList) {
+        Map<String, LocalDateTime> tradeTimeMap = new HashMap<>();
+
+        for (Trade trade : tradeList) {
+            tradeTimeMap.put(trade.getTradeTicker(), maxTime);
+        }
+        return tradeTimeMap;
     }
 }

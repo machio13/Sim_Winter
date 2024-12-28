@@ -1,4 +1,4 @@
-package simwinter;
+package simwinter.position;
 
 import java.io.BufferedReader;
 import java.io.File;

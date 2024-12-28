@@ -1,14 +1,17 @@
 package simwinter.contact;
 
-import simwinter.*;
+import simwinter.detailStock.DetailStock;
+import simwinter.detailStock.DetailStockDisplay;
+import simwinter.detailStock.DetailStockInput;
 import simwinter.master.MasterCsvDisplay;
 import simwinter.master.MasterCsvReader;
 import simwinter.master.MasterCsvWriter;
 import simwinter.master.Stock;
+import simwinter.position.*;
 import simwinter.trade.Trade;
-import simwinter.trade.TradeCsvDisplay;
-import simwinter.trade.TradeCsvReader;
-import simwinter.trade.TradeCsvWriter;
+import simwinter.trade.original.TradeCsvDisplay;
+import simwinter.trade.original.TradeCsvReader;
+import simwinter.trade.original.TradeCsvWriter;
 
 import java.io.File;
 import java.util.List;
@@ -28,12 +31,16 @@ public class Menu {
             System.out.println("4. 取引表示");
             System.out.println("5. Step6 保有ポジション表示");
             System.out.println("6. Step7 保有ポジション表示");
-            System.out.println("9. アプリケーションを終了します");
+            System.out.println("7. 情報更新");
+            System.out.println("8. 保有ポジション書き込み");
+            System.out.println("9. 銘柄マスタ詳細表示");
+            System.out.println("0. アプリケーションを終了します");
             System.out.print("入力してください:");
             String userInput = scanner.nextLine();
             File marketCsvFile = new File("src/SimWinter/csvfile/Master.csv");
             File tradeCsvFile = new File("src/SimWinter/csvfile/TradeData.csv");
-            File marketPriceFile = new File("src/simwinter/MarketPrice.csv");
+            File marketPriceFile = new File("src/simwinter/csvfile/MarketPrice.csv");
+            File neoFile = new File("src/simwinter/NeoMarketPrice.csv");
 
             switch (userInput) {
                 case "1" -> {
@@ -73,7 +80,35 @@ public class Menu {
                     PositionNewDisplay positionNewDisplay = new PositionNewDisplay();
                     positionNewDisplay.allShowPosition(positionList, marketPriceList);
                 }
+                case "7" -> {
+                    System.out.println("情報更新");
+                    KeyPress.pressControlAndS();
+                }
+                case "8" -> {
+                    System.out.println("「保有ポジション自動書き込み」が選択されました。");
+
+                }
                 case "9" -> {
+                    System.out.println("「銘柄マスタ詳細表示」が選択されました。");
+                    List<Stock> stockList = MasterCsvReader.readMarketCsv(marketCsvFile);
+                    List<Trade> tradeList = TradeCsvReader.readTradeCsv(tradeCsvFile);
+                    List<MarketPrice> marketPriceList = MarketPriceReader.readMarketPrice(marketPriceFile);
+                    List<Position> positionList = PositionNewInput.newPosition(tradeList, marketPriceList);
+                    List<DetailStock> detailStocks = DetailStockInput.findStock(tradeCsvFile, stockList, positionList);
+                    DetailStockDisplay.display(detailStocks);
+                }
+//                case "8" -> {
+//                    System.out.println("ためし");
+////                    List<ProStock> reader = NeoMarketPriceReader.readData(neo);
+////                    NeoMarketPriceDisplay.showDisplay(reader);
+//
+//                    List<Trade> tradeList = TradeCsvReader.readTradeCsv(tradeCsvFile);
+//                    Map<String, BigDecimal> marketPriceMap = NeoMarketPriceReader.marketPriceMap(neoFile);
+//                    Map<String, String> marketNameMap = NeoMarketPriceReader.marketName(neoFile);
+//                    NeoMarketPriceDisplay.showDisplay(marketPriceMap, marketNameMap, tradeList);
+//
+//                }
+                case "0" -> {
                     System.out.println("アプリケーションを終了します。");
                     System.out.println("---");
                     check = false;

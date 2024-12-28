@@ -2,13 +2,18 @@ package simwinter;
 
 import simwinter.master.MasterCsvReader;
 import simwinter.master.Stock;
+import simwinter.position.Position;
 import simwinter.trade.Trade;
-import simwinter.trade.TradeCsvReader;
+import simwinter.trade.original.TradeCsvReader;
 import simwinter.trade.TradeSide;
 
 import java.io.File;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.BitSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Checks {
 
@@ -47,8 +52,32 @@ public class Checks {
         return totalQuantity;
     }
 
-    //　時間が未来になっていないか確認する↓
-    public static boolean tradedDatetimeCheck(String ticker, LocalDateTime userInputTime, File tradeFile) {
+//    　時間が未来になっていないか確認する↓
+//    public static LocalDateTime tradedDatetimeCheck(String ticker, LocalDateTime userInputTime, File tradeFile) {
+//        List<Trade> tradeList = TradeCsvReader.readTradeCsv(tradeFile);
+//
+//        LocalDateTime maxTradedDatetime = null;
+//        for (Trade trade : tradeList) {
+//            if (trade.getTradeTicker().equals(ticker)) {
+//                if (maxTradedDatetime == null || trade.getTradedDatetime().isAfter(maxTradedDatetime)) {
+//                    maxTradedDatetime = trade.getTradedDatetime();
+//                }
+//            }
+//        }
+//
+//        // 該当するティッカーが見つからなかった場合、userInputTime を返す
+//        if (maxTradedDatetime == null) {
+//            return maxTradedDatetime;
+//        }
+//        else if (userInputTime.isAfter(maxTradedDatetime)) {
+//            System.out.println("入力時間：" + userInputTime);
+//            System.out.println("最新時間：" + maxTradedDatetime);
+//            return maxTradedDatetime;
+//        }
+//        return maxTradedDatetime;
+//    }
+
+    public static LocalDateTime tradedDatetimeCheck(String ticker, File tradeFile) {
         List<Trade> tradeList = TradeCsvReader.readTradeCsv(tradeFile);
 
         LocalDateTime maxTradedDatetime = null;
@@ -59,17 +88,21 @@ public class Checks {
                 }
             }
         }
+        return maxTradedDatetime;
+    }
 
-        // 該当するティッカーが見つからなかった場合、userInputTime を返す
-        if (maxTradedDatetime == null) {
-            return true;
+    public static LocalDateTime inputDateTimeCheck(String ticker, File tradeFile) {
+        List<Trade> tradeList = TradeCsvReader.readTradeCsv(tradeFile);
+
+        LocalDateTime maxInputDatetime = null;
+        for (Trade trade : tradeList) {
+            if (trade.getTradeTicker().equals(ticker)) {
+                if (maxInputDatetime == null || trade.getInputDatetime().isAfter(maxInputDatetime)) {
+                    maxInputDatetime = trade.getInputDatetime();
+                }
+            }
         }
-        else if (userInputTime.isAfter(maxTradedDatetime)) {
-            System.out.println("入力時間：" + userInputTime);
-            System.out.println("最新時間：" + maxTradedDatetime);
-            return true;
-        }
-        return false;
+        return maxInputDatetime;
     }
 
     public static boolean sideCheck(TradeSide side) {
@@ -78,5 +111,35 @@ public class Checks {
             return true;
         }
         return false;
+    }
+
+    public static long quantityMap(List<Position> positionList, String ticker) {
+        Map<String, Long> map = new HashMap<>();
+        for (Position position : positionList) {
+            map.put(position.getTicker(), position.getQuantity());
+        }
+
+        long quantity = map.get(ticker);
+        return quantity;
+    }
+
+    public static BigDecimal averageUnitPriceMap(List<Position> positionList, String ticker) {
+        Map<String, BigDecimal> map = new HashMap<>();
+        for (Position position : positionList) {
+            map.put(position.getTicker(), position.getAverageUnitPrice());
+        }
+
+        BigDecimal averageUnitPrice = map.get(ticker);
+        return averageUnitPrice;
+    }
+
+    public static BigDecimal realizedPnLMap(List<Position> positionList, String ticker) {
+        Map<String, BigDecimal> map = new HashMap<>();
+        for (Position position : positionList) {
+            map.put(position.getTicker(), position.getRealizedProfitAndLoss());
+        }
+
+        BigDecimal realizedPnL = map.get(ticker);
+        return realizedPnL;
     }
 }

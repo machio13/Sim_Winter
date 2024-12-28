@@ -1,9 +1,12 @@
-package simwinter;
+package simwinter.position;
+
+import simwinter.CutName;
+import simwinter.Formater;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-public class PositionNewDisplay extends CutName{
+public class PositionNewDisplay extends CutName {
 
     public void allShowPosition(List<Position> positionList, List<MarketPrice> marketPriceList) {
 

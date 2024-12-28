@@ -1,4 +1,7 @@
-package simwinter.trade;
+package simwinter.trade.original;
+
+import simwinter.trade.Trade;
+import simwinter.trade.TradeSide;
 
 import java.io.BufferedReader;
 import java.io.File;

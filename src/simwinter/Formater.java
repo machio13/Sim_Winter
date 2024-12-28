@@ -8,8 +8,13 @@ import java.time.format.DateTimeFormatterBuilder;
 
 public class Formater {
 
-    public static String isBigDecimalFormat(BigDecimal sharesIssued) {
+    public static String isSharesIssuedFormat(BigDecimal sharesIssued) {
         DecimalFormat decimalFormat = new DecimalFormat("#,###");
+        return decimalFormat.format(sharesIssued);
+    }
+
+    public static String isBigDecimalFormat(BigDecimal sharesIssued) {
+        DecimalFormat decimalFormat = new DecimalFormat("#,##0.00");
         return decimalFormat.format(sharesIssued);
     }
 
